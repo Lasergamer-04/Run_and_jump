@@ -1,0 +1,30 @@
+{
+    "1": {
+        "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "health": 1,
+        "health_lvl": 1,
+        "strength": 0.5,
+        "strength_lvl": 1,
+        "shooting": -0.05000000000000054,
+        "shooting_lvl": 81,
+        "coins": 10,
+        "total_jump": 138,
+        "total_kill": 284,
+        "total_death": 39,
+        "high_score": 39
+    },
+    "2": {
+        "password": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "health": 1,
+        "health_lvl": 1,
+        "strength": 0.5,
+        "strength_lvl": 1,
+        "shooting": 0.75,
+        "shooting_lvl": 1,
+        "coins": 1,
+        "total_jump": 6,
+        "total_kill": 1,
+        "total_death": 1,
+        "high_score": 0
+    }
+}

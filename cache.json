@@ -1,0 +1,17 @@
+{
+    "username": "1",
+    "player_data": {
+        "password": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "health": 1,
+        "health_lvl": 1,
+        "strength": 0.5,
+        "strength_lvl": 1,
+        "shooting": 0.75,
+        "shooting_lvl": 1,
+        "coins": 0,
+        "total_jump": 16,
+        "total_kill": 2,
+        "total_death": 8,
+        "high_score": 9
+    }
+}
