@@ -656,7 +656,7 @@ while True:
         if keys[pygame.K_SPACE] and on_ground:  # Jump if on the ground
             player_vel_y = -JUMP_STRENGTH
             on_ground = False
-            sound = random.choice(1,2)
+            sound = random.choice([1,2])
             if sound == 1:
                 jump_sound_1.play()
             else:
