@@ -4,6 +4,7 @@
 ## Personal project, a simple run and jump game in development:
 To run the Game:
   - download all the files, or copy this repo with your Terminal (navigate where you want the game to be located and then run git clone https://github.com/Lasergamer-04/Run_and_jump)
+
 Once installed:
   - Run main.py for smooth gameplay.
 
