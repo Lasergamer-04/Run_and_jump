@@ -8,3 +8,7 @@
   - variables.py contient toutes les variables du jeux.
   - events.py contient les evenements (actuellement vague de zombie, et apparission de Boss)
   - il y a deux dossiers (sounds, qui contient les sons du jeux et images qui contient les images du jeux).
+
+
+Les Images du jeux proiennent de Kenney / www.kenney.nl 
+Merci a eux
