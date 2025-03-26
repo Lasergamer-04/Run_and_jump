@@ -3,7 +3,7 @@
 
 Pour pouvoir jouer:
 
-Téléchargez tous les fichier, ou alors clonez le grace a votre terminal windows ou git (navigez ou vous voulez avoir le jeux, puis lancez: git clone https://github.com/Lasergamer-04/Run_and_jump)
+  - Téléchargez tous les fichier, ou alors clonez le grace a votre terminal windows ou git (navigez ou vous voulez avoir le jeux, puis lancez: git clone https://github.com/Lasergamer-04/Run_and_jump)
 
 Une Fois installer:
   - Lancez Main.py pour pouvoir jouer.(attention le jeux est uniquement en anglais)
