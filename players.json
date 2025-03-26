@@ -5,12 +5,12 @@
         "health_lvl": 1,
         "strength": 0.5,
         "strength_lvl": 1,
-        "shooting": -0.05000000000000054,
-        "shooting_lvl": 81,
-        "coins": 10,
-        "total_jump": 138,
-        "total_kill": 284,
-        "total_death": 39,
+        "shooting": 0.5799999999999998,
+        "shooting_lvl": 18,
+        "coins": 8,
+        "total_jump": 27,
+        "total_kill": 27,
+        "total_death": 10,
         "high_score": 39
     },
     "2": {

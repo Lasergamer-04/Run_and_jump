@@ -17,7 +17,6 @@ coins_collected = 0
 total_coins = 0
 
 # Platform variables
-ground_height = 20
 platforms = [(0, HEIGHT - ground_height, WIDTH, ground_height)]  # Initial ground
 
 # Obstacle variables

@@ -32,6 +32,8 @@ BOSS_FIGHT_INTERVAL = 27  # Every 27 seconds
 DATA_FILE = "players.json"
 CACHE_FILE = "cache.json"
 
+ground_height = 20
+
 jump_sound_1 = pygame.mixer.Sound('sounds/jump1.wav')
 jump_sound_2 = pygame.mixer.Sound('sounds/jump2.wav')
 shoot_sound = pygame.mixer.Sound('sounds/shoot.wav')

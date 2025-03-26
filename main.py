@@ -83,7 +83,7 @@ def login_screen():
                     if player_data:
                         return username, player_data
                     else:
-                        display_messages(screen, "Invalid credentials")
+                        display_message(screen, "Invalid credentials")
                 elif event.key == pygame.K_r:
                     register_screen()
                 elif event.key == pygame.K_TAB:
@@ -164,6 +164,68 @@ class Player:
         self.total_jump = data["total_jump"]
         self.total_kill = data["total_kill"]
         self.total_death = data["total_death"]
+
+        # Charger et redimensionner les images
+        self.walk_images = [
+            pygame.transform.scale(
+                pygame.image.load('Images/PNG/Soldier/Poses/soldier_walk1.png').convert_alpha(),
+                (50, 100)  # Taille souhaitée : largeur=50, hauteur=100
+            ),
+            pygame.transform.scale(
+                pygame.image.load('Images/PNG/Soldier/Poses/soldier_walk2.png').convert_alpha(),
+                (50, 100)
+            )
+        ]
+        self.slide_image = pygame.transform.scale(
+            pygame.image.load('Images/PNG/Soldier/Poses/soldier_slide.png').convert_alpha(),
+            (50, 50)  # Taille pour l'image de glissade
+        )
+        self.jump_image = pygame.transform.scale(
+            pygame.image.load('Images/PNG/Soldier/Poses/soldier_jump.png').convert_alpha(),
+            (50, 100)  # Taille pour l'image de saut
+        )
+
+        # Initialisation de l'état du joueur
+        self.image = self.walk_images[0]  # Image par défaut
+        self.rect = self.image.get_rect()
+        self.rect.x = 100  # Position initiale en x
+        self.rect.y = HEIGHT - ground_height - self.rect.height  # Position initiale en y
+        self.state = "walking"  # Default state
+        self.image_index = 0  # For walking animation
+        self.last_update = pygame.time.get_ticks()  # Timer for animation
+        self.animation_delay = 200  # Delay between frames (200 ms)
+
+    def update(self, on_ground, is_crouching, is_jumping):
+        # Update player state
+        if is_jumping:
+            self.state = "jumping"
+        elif is_crouching:
+            self.state = "sliding"
+        else:
+            self.state = "walking"
+
+        # Update image based on state
+        if self.state == "walking":
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_update > self.animation_delay:
+                self.last_update = current_time
+                self.image_index = (self.image_index + 1) % len(self.walk_images)
+                self.image = self.walk_images[self.image_index]
+        elif self.state == "jumping":
+            self.image = self.jump_image
+        elif self.state == "sliding":
+            self.image = self.slide_image
+
+        
+        # Update rect position and size to match the current image
+        previous_bottom = self.rect.bottom  # Sauvegarde la position verticale
+        self.rect = self.image.get_rect()  # Met à jour la taille de la hitbox pour correspondre à l'image
+        self.rect.x = 100  # Position horizontale fixe
+        self.rect.bottom = previous_bottom  # Restaure la position verticale
+
+        # Update vertical position if not on the ground
+        if not on_ground:
+            self.rect.y += GRAVITY
 
     def upgrade_health(self):
         self.health += 1
@@ -619,6 +681,19 @@ while True:
             is_crouching = False
             player_height = standing_height  # Stand up
 
+        # Inside the game loop
+        is_jumping = not on_ground and player_vel_y < 0  # Check if the player is jumping
+        is_crouching = keys[pygame.K_DOWN] and on_ground  # Check if the player is crouching
+
+        # Update the player
+        player.update(on_ground, is_crouching, is_jumping)
+
+        # Draw the player
+        screen.blit(player.image, player.rect)
+
+        # Draw the hitbox (black rectangle)
+        pygame.draw.rect(screen, (0, 0, 0), player.rect, 2)  # Dessine un rectangle noir autour de la hitbox
+
         # Shoot bullets
         if keys[pygame.K_RIGHT]:
             bullet_cooldown = time.time()
@@ -646,14 +721,16 @@ while True:
         render_coin_count(screen, coins_collected)
 
         # Gravity
-        player_vel_y += GRAVITY
-        player_y += player_vel_y
+        player_vel_y += GRAVITY  # Apply gravity to the vertical velocity
+        player.rect.y += player_vel_y  # Update the player's vertical position
 
         # Collision with ground
-        if player_y + player_height >= HEIGHT - ground_height:
-            player_y = HEIGHT - player_height - ground_height
-            player_vel_y = 0
+        if player.rect.y + player.rect.height >= HEIGHT - ground_height:
+            player.rect.y = HEIGHT - ground_height - player.rect.height  # Reset position to ground level
+            player_vel_y = 0  # Stop vertical movement
             on_ground = True
+        else:
+            on_ground = False  # Player is in the air
 
         if zombies:
             randomsound = random.randint(1, 500)
@@ -676,7 +753,7 @@ while True:
         if frames_since_last_obstacle >= next_obstacle_interval:
             frames_since_last_obstacle = 0
             next_obstacle_interval = random.randint(OBSTACLE_FREQ_MIN, OBSTACLE_FREQ_MAX)
-            obstacle_offset = random.choice([0, 30, 60])
+            obstacle_offset = random.choice([0, 50, 100])
             obstacles.append([WIDTH, HEIGHT - ground_height - obstacle_height - obstacle_offset, obstacle_width, obstacle_height])
 
         # Move obstacles
@@ -687,30 +764,28 @@ while True:
                 score += 1  # Increase score when passing an obstacle
 
         # Check for collisions with obstacles
-        player_rect = pygame.Rect(player_x, player_y, player_width, player_height)
+        # Utilisez player.rect pour les collisions
         for obstacle in obstacles:
             obstacle_rect = pygame.Rect(obstacle)
-            if player_rect.colliderect(obstacle_rect):
+            if player.rect.colliderect(obstacle_rect):  # Utilisez player.rect ici
                 death_count += 1
                 death_sound.play()
                 game_over = True
         
        # Check for collisions with zombies
         for zombie in zombies:
-            if player_rect.colliderect(zombie.rect):
+            if player.rect.colliderect(zombie.rect):
                 death_count += 1
                 death_sound.play()
                 game_over = True
 
         # Check for collisions with bosses
         for boss in bosses:
-            if player_rect.colliderect(boss.rect):
+            if player.rect.colliderect(boss.rect):
                 death_count += 1
                 death_sound.play()
                 game_over = True
 
-        # Draw player
-        pygame.draw.rect(screen, BLACK, (player_x, player_y, player_width, player_height))
 
         # Draw platforms
         for plat in platforms:
